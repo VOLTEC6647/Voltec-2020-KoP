@@ -6,7 +6,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
-def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def ROBOT_MAIN_CLASS = "org.usfirst.frc6647.robot.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -29,12 +29,19 @@ deploy {
         // Built in artifact to deploy arbitrary files to the roboRIO.
         fileTreeArtifact('frcStaticFileDeploy') {
             // The directory below is the local directory to deploy
-            files = fileTree(dir: 'src/main/deploy')
+            files = fileTree(dir: 'deploy')
             // Deploy to RoboRIO target, into /home/lvuser/deploy
             targets << "roborio"
             directory = '/home/lvuser/deploy'
         }
     }
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://jitpack.io' } // Used by lib6647.
+	maven { url 'https://devsite.ctr-electronics.com/maven/release'} // Used by CTRE Phoenix libraries.
+    maven { url "https://repo1.maven.org/maven2/" } // Used by NavX libraries.
 }
 
 // Set this to true to enable desktop support.
@@ -43,16 +50,19 @@ def includeDesktopSupport = true
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
+	// WPILib dependencies.
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
-
 
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
     testImplementation 'junit:junit:4.12'
+
+	// lib6647
+	compile group: 'com.github.VOLTEC6647', name: 'lib6647', version: '05f85e5'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging

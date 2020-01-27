@@ -1,0 +1,66 @@
+{
+	"chassis": {
+		"talons": [
+			{
+				"name": "frontLeft",
+				"port": 2,
+				"limiter": 1,
+				"inverted": false,
+				"neutralMode": "Brake",
+				"sensor": {
+					"feedback": {
+						"feedbackDevice": "QuadEncoder",
+						"pidIdx": 0,
+						"timeoutMs": 0
+					},
+					"phase": false,
+					"sensorPos": 0,
+					"pidIdx": 0,
+					"timeoutMs": 10
+				}
+			},
+			{
+				"name": "frontRight",
+				"port": 1,
+				"limiter": 1,
+				"inverted": false,
+				"neutralMode": "Brake",
+				"sensor": {
+					"feedback": {
+						"feedbackDevice": "QuadEncoder",
+						"pidIdx": 0,
+						"timeoutMs": 0
+					},
+					"phase": false,
+					"sensorPos": 0,
+					"pidIdx": 0,
+					"timeoutMs": 10
+				}
+			}
+		],
+		"victors": [
+			{
+				"name": "backLeft",
+				"port": 4,
+				"limiter": 1,
+				"inverted": false,
+				"neutralMode": "Brake"
+			},
+			{
+				"name": "backRight",
+				"port": 3,
+				"limiter": 1,
+				"inverted": false,
+				"neutralMode": "Brake"
+			}
+		],
+		"ahrs": [
+			{
+				"name": "navX",
+				"port": "MXP",
+				"resetOnStart": true,
+				"inverted": true
+			}
+		]
+	}
+}
