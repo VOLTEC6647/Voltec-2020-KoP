@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2020.2.2"
@@ -38,10 +40,30 @@ deploy {
 }
 
 repositories {
-	mavenCentral()
-	maven { url 'https://jitpack.io' } // Used by lib6647.
-	maven { url 'https://devsite.ctr-electronics.com/maven/release'} // Used by CTRE Phoenix libraries.
-    maven { url "https://repo1.maven.org/maven2/" } // Used by NavX libraries.
+    mavenLocal()
+    gradlePluginPortal()
+
+    String frcYear = '2020'
+    File frcHome
+    if (OperatingSystem.current().isWindows()) {
+        String publicFolder = System.getenv('PUBLIC')
+        if (publicFolder == null) {
+            publicFolder = "C:\\Users\\Public"
+        }
+        def homeRoot = new File(publicFolder, "wpilib")
+        frcHome = new File(homeRoot, frcYear)
+    } else {
+        def userFolder = System.getProperty("user.home")
+        def homeRoot = new File(userFolder, "wpilib")
+        frcHome = new File(homeRoot, frcYear)
+    }
+    def frcHomeMaven = new File(frcHome, 'maven')
+    maven {
+        name 'frcHome'
+        url frcHomeMaven
+    }
+
+	maven { url 'https://jitpack.io' }
 }
 
 // Set this to true to enable desktop support.
@@ -55,14 +77,15 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
-    implementation wpi.deps.vendor.java()
+	implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
+	// Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
 	// lib6647
-	compile group: 'com.github.VOLTEC6647', name: 'lib6647', version: '05f85e5'
+	implementation 'com.github.VOLTEC6647:lib6647:166aa4c'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
