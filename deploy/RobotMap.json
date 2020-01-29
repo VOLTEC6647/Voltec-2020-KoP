@@ -74,7 +74,7 @@
 			{
 				"name": "navX",
 				"port": "MXP",
-				"resetOnStart": true,
+				"resetOnStart": false,
 				"inverted": true
 			}
 		]

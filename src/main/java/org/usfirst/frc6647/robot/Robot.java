@@ -28,17 +28,13 @@ public class Robot extends LooperRobot {
 	 * to be created once, by the {@link Main} class.
 	 */
 	protected Robot() {
-		super(Chassis::new);
+		super();
 
 		if (instance == null) // Might not be necessary, but just in case.
 			instance = this;
-	}
 
-	@Override
-	public void initJoysticks() {
-		// Any joystick initialization should be run here as this method runs before
-		// each subsystem's initialization, allowing you to bind commands to buttons
-		// from within any subsystem.
 		joysticks.put("driver1", new JController(0));
+
+		registerSubsystems(Chassis::new);
 	}
 }
