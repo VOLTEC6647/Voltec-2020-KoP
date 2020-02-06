@@ -85,7 +85,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
 	// lib6647
-	implementation 'com.github.VOLTEC6647:lib6647:1cafa88'
+	implementation 'com.github.VOLTEC6647:lib6647:1ecae71'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging

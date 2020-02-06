@@ -14,8 +14,8 @@ import org.usfirst.lib6647.subsystem.supercomponents.SuperTalon;
 import org.usfirst.lib6647.subsystem.supercomponents.SuperVictor;
 import org.usfirst.lib6647.wpilib.LooperRobot;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class Chassis extends PIDSuperSubsystem implements SuperAHRS, SuperTalon, SuperVictor {
 	/** {@link DifferentialDrive} used by this {@link SuperSubsystem Subsystem}. */
 	private DifferentialDrive drive;
+	/** {@link JController} instance used by the Robot. */
+	private JController joystick;
 	/** {@link HyperAHRS} instance of the Robot's NavX. */
 	private HyperAHRS navX;
 
@@ -47,24 +49,24 @@ public class Chassis extends PIDSuperSubsystem implements SuperAHRS, SuperTalon,
 		getVictor("backRight").follow(getTalon("frontRight"));
 
 		drive = new DifferentialDrive(getTalon("frontLeft"), getTalon("frontRight"));
-		drive.setDeadband(0);
+		joystick = Robot.getInstance().getJoystick("driver1");
+		navX = getAHRS("navX");
 
-		navX = ahrsDevices.get("navX");
-
-		Robot.getInstance().getJoystick("driver1").get("X").whenPressed(new InstantCommand(() -> {
-			getTalon("frontLeft").setSelectedSensorPosition(0, 0, 10);
-			getTalon("frontRight").setSelectedSensorPosition(0, 0, 10);
-		}));
+		configureButtonBindings();
 	}
 
-	@Override
-	public void periodic() {
-		super.periodic();
+	/**
+	 * Throw all Command initialization and {@link JController} binding for this
+	 * {@link SuperSubsystem} into this method.
+	 */
+	public void configureButtonBindings() {
+		InstantCommand resetEncoders = new InstantCommand(() -> {
+			getTalon("frontLeft").reset();
+			getTalon("frontRight").reset();
+		});
 
-		SmartDashboard.putNumber("l_encoder_pos", getTalon("frontLeft").getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("l_encoder_vel", getTalon("frontLeft").getSelectedSensorVelocity(0));
-		SmartDashboard.putNumber("r_encoder_pos", getTalon("frontRight").getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("r_encoder_vel", getTalon("frontRight").getSelectedSensorPosition(0));
+		if (joystick.getName().equals("Wireless Controller"))
+			joystick.get("X").whenPressed(resetEncoders);
 	}
 
 	@Override
@@ -89,12 +91,16 @@ public class Chassis extends PIDSuperSubsystem implements SuperAHRS, SuperTalon,
 
 			@Override
 			public synchronized void onLoop(double timestamp) {
+				if (pidGyro.atSetpoint())
+					pidGyro.reset();
+
 				setSetpoint("gyro",
-						Math.abs(joystick.getRawAxis(5)) > 0.15 || Math.abs(joystick.getRawAxis(2)) > 0.15
-								? Math.toDegrees(Math.atan2(joystick.getRawAxis(5), joystick.getRawAxis(2)))
+						Math.abs(joystick.getY()) > 0.15 || Math.abs(joystick.getX()) > 0.15
+								? joystick.getAngleRadians(Hand.kRight)
 								: navX.getYaw());
-				double output = pidGyro.calculate(navX.getYaw());
-				drive.arcadeDrive(joystick.getRawAxis(1), output, false);
+
+				var output = pidGyro.calculate(navX.getYaw());
+				drive.arcadeDrive(joystick.getY(Hand.kLeft), output, false);
 			}
 
 			@Override

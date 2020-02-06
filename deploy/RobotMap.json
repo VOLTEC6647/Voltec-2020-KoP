@@ -3,17 +3,17 @@
 		"pid": [
 			{
 				"name": "gyro",
-				"p": 0.008,
-				"i": 0.0,
-				"d": 0.001,
+				"p": 0.0054,
+				"i": 0.0008,
+				"d": 0.0001,
 				"period": 0.01,
 				"continuous": true,
 				"inputMin": -180,
 				"inputMax": 180,
 				"outputMin": -1,
 				"outputMax": 1,
-				"fixedValues": false,
-				"tolerance": 0.5
+				"fixedValues": true,
+				"tolerance": 2.5
 			}
 		],
 		"talons": [
@@ -75,7 +75,7 @@
 				"name": "navX",
 				"port": "MXP",
 				"resetOnStart": false,
-				"inverted": true
+				"inverted": false
 			}
 		]
 	}

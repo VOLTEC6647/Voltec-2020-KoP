@@ -5,6 +5,8 @@ import org.usfirst.lib6647.oi.JController;
 import org.usfirst.lib6647.subsystem.SuperSubsystem;
 import org.usfirst.lib6647.wpilib.LooperRobot;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+
 /**
  * Basic implementation of a {@link LooperRobot} with a single instance, an
  * example {@link SuperSubsystem Subsystem} ({@link Chassis}), and a single
@@ -33,8 +35,21 @@ public class Robot extends LooperRobot {
 		if (instance == null) // Might not be necessary, but just in case.
 			instance = this;
 
-		joysticks.put("driver1", new JController(0));
-
+		initJoysticks();
 		registerSubsystems(Chassis::new);
+	}
+
+	/**
+	 * Run any {@link JController} initialization here.
+	 */
+	private void initJoysticks() {
+		var driver1 = new JController(0);
+
+		if (driver1.getName().equals("Wireless Controller")) {
+			driver1.setXY(Hand.kLeft, 0, 1);
+			driver1.setXY(Hand.kRight, 4, 5);
+		}
+
+		joysticks.put("driver1", driver1);
 	}
 }
