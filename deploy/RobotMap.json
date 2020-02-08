@@ -17,7 +17,6 @@
 				"minI": -0.5,
 				"maxI": 0.5,
 				"positionTolerance": 2.5,
-				"velocityTolerance": 100,
 				"fixedValues": false
 			}
 		],

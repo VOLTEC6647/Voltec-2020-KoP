@@ -5,10 +5,10 @@ import org.usfirst.lib6647.loops.ILooper;
 import org.usfirst.lib6647.loops.Loop;
 import org.usfirst.lib6647.loops.LoopType;
 import org.usfirst.lib6647.oi.JController;
-import org.usfirst.lib6647.subsystem.ProfiledPIDSuperSubsystem;
 import org.usfirst.lib6647.subsystem.SuperSubsystem;
 import org.usfirst.lib6647.subsystem.hypercomponents.HyperAHRS;
 import org.usfirst.lib6647.subsystem.supercomponents.SuperAHRS;
+import org.usfirst.lib6647.subsystem.supercomponents.SuperProfiledPID;
 import org.usfirst.lib6647.subsystem.supercomponents.SuperTalon;
 import org.usfirst.lib6647.subsystem.supercomponents.SuperVictor;
 import org.usfirst.lib6647.wpilib.LooperRobot;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  * Example implementation of a Chassis {@link SuperSubsystem Subsystem}, with
  * angle-arcade control.
  */
-public class Chassis extends ProfiledPIDSuperSubsystem implements SuperAHRS, SuperTalon, SuperVictor {
+public class Chassis extends SuperSubsystem implements SuperAHRS, SuperProfiledPID, SuperTalon, SuperVictor {
 	/** {@link DifferentialDrive} used by this {@link SuperSubsystem Subsystem}. */
 	private DifferentialDrive drive;
 	/** {@link JController} instance used by the Robot. */
@@ -41,6 +41,7 @@ public class Chassis extends ProfiledPIDSuperSubsystem implements SuperAHRS, Sup
 		// inherited from the SuperSubsystem class, while the second argument is simply
 		// this Subsystem's name.
 		initAHRS(robotMap, getName());
+		initProfiledPIDs(robotMap, getName());
 		initTalons(robotMap, getName());
 		initVictors(robotMap, getName());
 
