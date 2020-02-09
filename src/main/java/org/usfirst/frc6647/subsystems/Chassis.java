@@ -76,9 +76,7 @@ public class Chassis extends SuperSubsystem implements SuperAHRS, SuperProfiledP
 
 			@Override
 			public void onStart(double timestamp) {
-				joystick = Robot.getInstance().getJoystick("driver1");
 				controller = getProfiledPIDController("gyro");
-
 				navX.reset();
 
 				synchronized (Chassis.this) {
