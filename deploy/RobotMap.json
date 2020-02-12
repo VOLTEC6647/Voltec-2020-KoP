@@ -25,7 +25,7 @@
 				"name": "frontLeft",
 				"port": 2,
 				"limiter": 1,
-				"inverted": false,
+				"inverted": true,
 				"neutralMode": "Brake",
 				"sensor": {
 					"feedback": {
@@ -43,7 +43,7 @@
 				"name": "frontRight",
 				"port": 1,
 				"limiter": 1,
-				"inverted": false,
+				"inverted": true,
 				"neutralMode": "Brake",
 				"sensor": {
 					"feedback": {
@@ -63,14 +63,14 @@
 				"name": "backLeft",
 				"port": 4,
 				"limiter": 1,
-				"inverted": false,
+				"inverted": true,
 				"neutralMode": "Brake"
 			},
 			{
 				"name": "backRight",
 				"port": 3,
 				"limiter": 1,
-				"inverted": false,
+				"inverted": true,
 				"neutralMode": "Brake"
 			}
 		],

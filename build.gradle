@@ -1,5 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2020.2.2"
@@ -41,29 +39,6 @@ deploy {
 
 repositories {
     mavenLocal()
-    gradlePluginPortal()
-
-    String frcYear = '2020'
-    File frcHome
-    if (OperatingSystem.current().isWindows()) {
-        String publicFolder = System.getenv('PUBLIC')
-        if (publicFolder == null) {
-            publicFolder = "C:\\Users\\Public"
-        }
-        def homeRoot = new File(publicFolder, "wpilib")
-        frcHome = new File(homeRoot, frcYear)
-    } else {
-        def userFolder = System.getProperty("user.home")
-        def homeRoot = new File(userFolder, "wpilib")
-        frcHome = new File(homeRoot, frcYear)
-    }
-    def frcHomeMaven = new File(frcHome, 'maven')
-    maven {
-        name 'frcHome'
-        url frcHomeMaven
-    }
-
-	maven { url 'https://jitpack.io' }
 }
 
 // Set this to true to enable desktop support.
@@ -83,9 +58,9 @@ dependencies {
 
 	// Use JUnit test framework
     testImplementation 'junit:junit:4.12'
-
+	
 	// lib6647
-	implementation 'com.github.VOLTEC6647:lib6647:72ca56b'
+	implementation group: 'com.github.VOLTEC6647', name: 'lib6647', version: 'v1.3.0'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging

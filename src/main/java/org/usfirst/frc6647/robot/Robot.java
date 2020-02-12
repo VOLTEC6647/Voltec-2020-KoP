@@ -1,9 +1,9 @@
 package org.usfirst.frc6647.robot;
 
 import org.usfirst.frc6647.subsystems.Chassis;
+import org.usfirst.lib6647.loops.LooperRobot;
 import org.usfirst.lib6647.oi.JController;
 import org.usfirst.lib6647.subsystem.SuperSubsystem;
-import org.usfirst.lib6647.wpilib.LooperRobot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
@@ -43,13 +43,13 @@ public class Robot extends LooperRobot {
 	 * Run any {@link JController} initialization here.
 	 */
 	private void initJoysticks() {
-		var driver1 = new JController(0, 0);
+		var driver1 = new JController(0);
 
-		System.out.printf("'%s'", driver1.getName());
+		System.out.printf("'%s'\n", driver1.getName());
 
 		if (driver1.getName().equals("Wireless Controller")) {
 			driver1.setXY(Hand.kLeft, 0, 1);
-			driver1.setXY(Hand.kRight, 4, 5);
+			driver1.setXY(Hand.kRight, 2, 5);
 		} else if (driver1.getName().equals("Generic   USB  Joystick")) {
 			driver1.setXY(Hand.kLeft, 0, 1);
 			driver1.setXY(Hand.kRight, 2, 4);
